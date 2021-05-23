@@ -1,15 +1,10 @@
-/*
-해결해야할 것
-소수점 처리하기 : .감지시 .이후의 숫자 세는 counter를 사용.
-문자 입력 모듈을 따로 함수로 빼내기. 코드가 너무 더러움.
-*/
-
 #include<stdio.h>
 #define TEXT_LENGTH 512
 
 //matData은 행렬의 주소, *matData은 행렬의 하나의 행을 지정, **matData은 행렬의 하나의 원소(열)를 지정한다.
 typedef struct Matrix{
-	int n, m = 0;	//행렬의 행과 열의 크기
+	int n = 0;
+	int m = 0;	//행렬의 행과 열의 크기
 	char ** matData;	//행렬의 data
 	char * textMat;
 } Matrix;
@@ -91,7 +86,7 @@ void getMatrix(Matrix matStruct){
 		else{
 			printf("Error 001");
 			printf("숫자와 쉼표 외에는 입력하지 마십시오.");
-			return -1;
+			return;
 		}
 		//한 원소의 입력 후 주요 변수 초기화 작업
 		num = 0;
