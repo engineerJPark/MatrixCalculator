@@ -1,6 +1,10 @@
+// 앞으로는 프로그램을 짤 때, 함수(기능)별로 구분하고 그에 해당하는 기능들을 하나씩 추가해서 테스트 우선해보는 방식으로 작성해야겠다. 진짜 에러가 끝도 없어.
+
 #include<stdio.h>
 #define TEXT_LENGTH 512
 #define MATMAXNUMBER 10
+#define ERRORTEST "no error\n"
+// printf(ERRORTEST);
 
 //matData은 행렬의 주소, *matData은 행렬의 하나의 행을 지정, **matData은 행렬의 하나의 원소(열)를 지정한다.
 typedef struct Matrix{
@@ -20,7 +24,6 @@ int main(){
 	//생성된 행렬 개수를 세는 변수.
 	int i = 0;
 	//행렬구조체의 주소가 저장되는 곳. 배열로 쉽게 접근할 목적이다.
-	// 왜 *은 안되고 배열은 되나?
 	Matrix matBox[MATMAXNUMBER];
 	//초기 행렬 초기화. 초기 모든 행렬 원소가 0이 되도록 한다.
 	Matrix initMat;
@@ -58,24 +61,27 @@ void getMatrix(Matrix matStruct){
 	initializeMatrix(matStruct);
 
 	matStruct.textMat = (char*)malloc(TEXT_LENGTH);
+	printf("데이터를 입력해주세요.");
 	scanf("%s", matStruct.textMat);
+	 
 	char len = strlen(matStruct.textMat);
-	
 	char num = 0;	//숫자를 임시로 저장할 공간이다.
-	char numtemp[10] = {}; //숫자를 임시로 저장할 공간이다.
+	char numtemp[10] = {0}; //숫자를 임시로 저장할 공간이다.
 	char z = 0, k = 1;
 	char x, y = 0; // 행과 열을 표현하는 숫자다.
 	
-	printf("데이터를 입력해주세요.");
+	
+	 
 	//문자를 행과 열로 나눠준다.
 	for(int i = 0; i <= len; i++){
-		if(matStruct.textMat[i]!="," || matStruct.textMat[i]!="." || matStruct.textMat[i]!=NULL){
+		if((matStruct.textMat[i] != ',') || (matStruct.textMat[i] != NULL)){
 			//숫자 입력. 10진수 단위로 또 만들어줘야한다.
-			numtemp[z] = atoi(matStruct.textMat[i]);
+			numtemp[z] = matStruct.textMat[i]-48; // 단일 문자를 알맞은 숫자로 변환시켜주어야한다.
 			z++;
+			printf(ERRORTEST);
 		}
-		else if(matStruct.textMat[i]==","||matStruct.textMat[i]==NULL){
-			//쉼표나 마지막표시(널값) 들어온 경우 
+		else if((matStruct.textMat[i] == ',') || (matStruct.textMat[i] == NULL)){
+			//쉼표나 마지막표시(널값) 들어온 경우
 			for(int j = 1; j <= z; j++){
 				//z-j번씩 10을 곱해준다음 더해준다.
 				for(k=1;k<=(z - j);k++){
