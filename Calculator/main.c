@@ -1,5 +1,7 @@
 // 앞으로는 프로그램을 짤 때, 함수(기능)별로 구분하고 그에 해당하는 기능들을 하나씩 추가해서 테스트 우선해보는 방식으로 작성해야겠다. 진짜 에러가 끝도 없어.
 
+// call by value에 의해서 initialize가 안되는 건지 확인해보기
+
 #include<stdio.h>
 #define TEXT_LENGTH 512
 #define MATMAXNUMBER 10
@@ -35,6 +37,7 @@ int main(){
 	printf("숫자와 , . 외의 값을 입력하시면 에러납니다...\n");
 	printf("아직까지는 정수형만 지원합니다. 그리고 0이라고 생략하지 말아주세요!\n");
 	//초기행렬 입력
+	initializeMatrix(matBox[i]);
 	getMatrix(matBox[i]);
 	showMatrix(matBox[i]);
 	
@@ -70,33 +73,26 @@ void getMatrix(Matrix matStruct){
 	char z = 0, k = 1;
 	char x, y = 0; // 행과 열을 표현하는 숫자다.
 	
-	
-	 
-	//문자를 행과 열로 나눠준다.
+	// 문자를 행과 열로 나눠준다.
+	// 이거야 말로 그냥 atoi() 쓰면 되는데 왜 이렇게?
 	for(int i = 0; i <= len; i++){
-		if((matStruct.textMat[i] != ',') || (matStruct.textMat[i] != NULL)){
-			//숫자 입력. 10진수 단위로 또 만들어줘야한다.
-			numtemp[z] = matStruct.textMat[i]-48; // 단일 문자를 알맞은 숫자로 변환시켜주어야한다.
-			z++;
-			printf(ERRORTEST);
-		}
-		else if((matStruct.textMat[i] == ',') || (matStruct.textMat[i] == NULL)){
+		if((matStruct.textMat[i] == ',') || (matStruct.textMat[i] == NULL)){
 			//쉼표나 마지막표시(널값) 들어온 경우
 			for(int j = 1; j <= z; j++){
 				//z-j번씩 10을 곱해준다음 더해준다.
 				for(k=1;k<=(z - j);k++){
-					numtemp[j] = numtemp[j]*10;
+					numtemp[j] = numtemp[j] * 10;
 				}
-				num = num + numtemp[j];
+				num = num + numtemp[j - 1];
 			}
 			matStruct.matData[x][y] = num;	//정확한 위치에 num을 대입
 			num = 0;
 			y++; if(y > matStruct.m){y=0; x++;} //열 혹은 행 증가
 		}
 		else{
-			printf("Error 001");
-			printf("숫자와 쉼표 외에는 입력하지 마십시오.");
-			return;
+			//숫자 입력. 10진수 단위로 또 만들어줘야한다.
+			numtemp[z] = matStruct.textMat[i]-48; // 단일 문자를 알맞은 숫자로 변환시켜주어야한다.
+			z++;
 		}
 		//한 원소의 입력 후 주요 변수 초기화 작업
 		num = 0;
