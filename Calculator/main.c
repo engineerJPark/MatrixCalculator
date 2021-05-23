@@ -38,7 +38,7 @@ void main(){
 //5x5행렬을 전부 0으로 초기화한다.
 void initializeMatrix(Matrix matStruct){
 	//이제 행과 열을 모두 0으로 초기화한다.
-	matStruct.matData = (char**)malloc(sizeof(char*) * matStruct.n);
+	matStruct.matData = (char**)malloc(sizeof(char**) * matStruct.n);
 	for(int i = 0; i < matStruct.n; i++){
 		matStruct.matData[i] = (float*)calloc(matStruct.m, sizeof(float) * matStruct.m);
 	}
