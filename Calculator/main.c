@@ -1,6 +1,8 @@
 // 앞으로는 프로그램을 짤 때, 함수(기능)별로 구분하고 그에 해당하는 기능들을 하나씩 추가해서 테스트 우선해보는 방식으로 작성해야겠다. 진짜 에러가 끝도 없어.
-
-// call by value에 의해서 initialize가 안되는 건지 확인해보기
+// https://m.blog.naver.com/PostView.naver?blogId=whdgml1996&logNo=221038044040&proxyReferer=https:%2F%2Fwww.google.com%2F
+// https://onsil-thegreenhouse.github.io/programming/c/2018/08/08/c_tutorial_12/
+// matData의 접근을 포인터 형식으로 바꿔야한다.
+// Call by dereference를 해야 argument의 내용물을 실질적으로 바꿀 수 있다.
 
 #include<stdio.h>
 #define TEXT_LENGTH 512
@@ -15,34 +17,6 @@ typedef struct Matrix{
 	char ** matData;	//행렬의 data
 	char * textMat;
 } Matrix;
-
-void initializeMatrix(Matrix matStruct);
-void getMatrix(Matrix matStruct);
-void showMatrix(Matrix matStruct);
-void editMatrix(Matrix matStruct);
-void killData(Matrix matStruct);
-
-int main(){
-	//생성된 행렬 개수를 세는 변수.
-	int i = 0;
-	//행렬구조체의 주소가 저장되는 곳. 배열로 쉽게 접근할 목적이다.
-	Matrix matBox[MATMAXNUMBER];
-	//초기 행렬 초기화. 초기 모든 행렬 원소가 0이 되도록 한다.
-	Matrix initMat;
-	initMat.n = initMat.m = 2;
-	matBox[i] = initMat;
-	//안내문
-	printf("최대 5x5 행렬을 지원합니다.\n\n");
-	printf("행렬의 값을 텍스트로 입력해주세요. ','는 열 방향에서 왼쪽으로 오른쪽으로 하나씩 개행시킵니다.\n");
-	printf("숫자와 , . 외의 값을 입력하시면 에러납니다...\n");
-	printf("아직까지는 정수형만 지원합니다. 그리고 0이라고 생략하지 말아주세요!\n");
-	//초기행렬 입력
-	initializeMatrix(matBox[i]);
-	getMatrix(matBox[i]);
-	showMatrix(matBox[i]);
-	
-	return 0;
-}
 
 //5x5행렬을 전부 0으로 초기화한다.
 void initializeMatrix(Matrix matStruct){
@@ -125,4 +99,26 @@ void killData(Matrix matStruct){
 		free(matStruct.matData[i]);
 	}
 	free(matStruct.matData);
+}
+
+int main(){
+	//생성된 행렬 개수를 세는 변수.
+	int i = 0;
+	//행렬구조체의 주소가 저장되는 곳. 배열로 쉽게 접근할 목적이다.
+	Matrix matBox[MATMAXNUMBER];
+	//초기 행렬 초기화. 초기 모든 행렬 원소가 0이 되도록 한다.
+	Matrix initMat;
+	initMat.n = initMat.m = 2;
+	matBox[i] = initMat;
+	//안내문
+	printf("최대 5x5 행렬을 지원합니다.\n\n");
+	printf("행렬의 값을 텍스트로 입력해주세요. ','는 열 방향에서 왼쪽으로 오른쪽으로 하나씩 개행시킵니다.\n");
+	printf("숫자와 , . 외의 값을 입력하시면 에러납니다...\n");
+	printf("아직까지는 정수형만 지원합니다. 그리고 0이라고 생략하지 말아주세요!\n");
+	//초기행렬 입력
+	initializeMatrix(matBox[i]);
+	getMatrix(matBox[i]);
+	showMatrix(matBox[i]);
+	
+	return 0;
 }
