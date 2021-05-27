@@ -1,14 +1,9 @@
-// 앞으로는 프로그램을 짤 때, 함수(기능)별로 구분하고 그에 해당하는 기능들을 하나씩 추가해서 테스트 우선해보는 방식으로 작성해야겠다. 진짜 에러가 끝도 없어.
-// https://m.blog.naver.com/PostView.naver?blogId=whdgml1996&logNo=221038044040&proxyReferer=https:%2F%2Fwww.google.com%2F
-// https://onsil-thegreenhouse.github.io/programming/c/2018/08/08/c_tutorial_12/
-// matData의 접근을 포인터 형식으로 바꿔야한다.
-// Call by dereference를 해야 argument의 내용물을 실질적으로 바꿀 수 있다.
-
 #include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 #define TEXT_LENGTH 512
 #define MATMAXNUMBER 10
-#define ERRORTEST "no error\n"
-// printf(ERRORTEST);
+#define ERRORTEST printf("no error\n");
 
 //matData은 행렬의 주소, *matData은 행렬의 하나의 행을 지정, **matData은 행렬의 하나의 원소(열)를 지정한다.
 typedef struct Matrix{
@@ -25,6 +20,7 @@ void initializeMatrix(Matrix * matStruct){
 	for(int i = 0; i < matStruct->n; i++){
 		matStruct->matData[i] = (float*)calloc(matStruct->m, sizeof(float) * matStruct->m);
 	}
+	matStruct->textMat = (char*)malloc(TEXT_LENGTH);
 }
 
 //text형태로 행렬을 받는다. ','로 숫자를 구분한다.
@@ -37,9 +33,10 @@ void getMatrix(Matrix * matStruct){
 	
 	initializeMatrix(matStruct);
 
-	matStruct->textMat = (char*)malloc(TEXT_LENGTH);
 	printf("데이터를 입력해주세요.");
 	scanf("%s", matStruct->textMat);
+	
+	/*아래부터는 아예 따로 함수를 만드는 것이 좋다.*/
 	 
 	char len = strlen(matStruct->textMat);
 	char num = 0;	//숫자를 임시로 저장할 공간이다.
@@ -49,6 +46,7 @@ void getMatrix(Matrix * matStruct){
 	
 	// 문자를 행과 열로 나눠준다.
 	// 이거야 말로 그냥 atoi() 쓰면 되는데 왜 이렇게?
+	// 함수를 따로 만들기
 	for(int i = 0; i <= len; i++){
 		if((matStruct->textMat[i] == ',') || (matStruct->textMat[i] == NULL)){
 			//쉼표나 마지막표시(널값) 들어온 경우
@@ -77,7 +75,7 @@ void getMatrix(Matrix * matStruct){
 	}
 }
 
-void showMatrix(Matrix matStruct){
+void showMatrix(Matrix * matStruct){
 	int i = 0, j = 0; // 각각 행과 열 상징
 	printf('\n');
 	for(i = 0; i < matStruct->n; i++){
@@ -88,13 +86,13 @@ void showMatrix(Matrix matStruct){
 	}
 }
 
-void editMatrix(Matrix matStruct){
+void editMatrix(Matrix * matStruct){
 	printf("%s\n", matStruct->textMat);
 	getMatrix(matStruct);
 }
 
 
-void killData(Matrix matStruct){
+void killData(Matrix * matStruct){
 	for (int i = 0; i < matStruct->n; i++){
 		free(matStruct->matData[i]);
 	}
