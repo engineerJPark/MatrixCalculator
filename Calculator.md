@@ -15,3 +15,6 @@ https://m.blog.naver.com/PostView.naver?blogId=whdgml1996&logNo=221038044040&pro
 https://onsil-thegreenhouse.github.io/programming/c/2018/08/08/c_tutorial_12/
 
 함수를 따로 만들기
+
+
+// http://pelex529.blogspot.com/2009/01/2.html
