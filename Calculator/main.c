@@ -3,7 +3,6 @@
 #include<stdlib.h>
 #define TEXT_LENGTH 512
 #define MATMAXNUMBER 10
-#define ERRORTEST printf("no error\n");
 
 typedef struct Matrix{
 	// row and coloum
@@ -12,21 +11,23 @@ typedef struct Matrix{
 	
 	// data of matrix
 	char ** matData;
-	char * textMat;
+	char textMat[TEXT_LENGTH];
 } Matrix;
 
 void parseText2Matrix(Matrix *matStruct){
 	int len = strlen(matStruct->textMat);
 	int num = 0;	// temporary space for sum
 	int numtemp[10] = {0}; // temporary space for number from textMat
-	int z, i = 0;
-	int x, y = 0; // row and column
+	int z, i; // row and column
+	int x, y;
+	int j, k;
+	z = i = x = y = 0;
 	
 	for(i = 0; i <= len; i++){
-		if(((matStruct->textMat)[i] == ',') || i > len){
-			for(int j = 1; j <= z; j++){
+		if(((matStruct->textMat)[i] == ',') || i >= len){
+			for(j = 1; j <= z; j++){
 				//multiply 10 for z-j times
-				for(int k = 1; k <= (z - j); k++){
+				for(k = 1; k <= (z - j); k++){
 					numtemp[j - 1] = numtemp[j - 1] * 10;
 				}
 				num = num + numtemp[j - 1];
@@ -36,12 +37,12 @@ void parseText2Matrix(Matrix *matStruct){
 			
 			// initializtion
 			num = 0;
-			while(z){
+			for(; z >= 0; z--){
 				numtemp[z] = 0;
-				z--;
 			}
+			z = 0;
 			y++;
-			if(y > matStruct->m){ y=0; x++; }
+			if(y >= matStruct->m){ y=0; x++; }
 		}
 		else{
 			// turn character to integer
@@ -55,10 +56,8 @@ Matrix *initializeMatrix(Matrix * matStruct){
 	//이제 행과 열을 모두 0으로 초기화한다.
 	matStruct->matData = malloc(sizeof(char*) * matStruct->n);
 	for(int i = 0; i < matStruct->n; i++){
-		matStruct->matData[i] = calloc(matStruct->m, sizeof(float) * matStruct->m);
+		matStruct->matData[i] = calloc(matStruct->m, sizeof(char*) * matStruct->m);
 	}
-	matStruct->textMat = malloc(TEXT_LENGTH);
-	
 	return matStruct;
 }
 
@@ -68,7 +67,7 @@ void getMatrix(Matrix * matStruct){
 	scanf("%d %d", &(matStruct->n), &(matStruct->m));
 	if((matStruct->n) > 5 || (matStruct->m) > 5){
 		printf("본 계산기는 5x5까지만 지원합니다.\n");
-		return -1;
+		return ;
 	}
 
 	matStruct = initializeMatrix(matStruct);
@@ -80,12 +79,12 @@ void getMatrix(Matrix * matStruct){
 
 void showMatrix(Matrix * matStruct){
 	int i = 0, j = 0; // 각각 행과 열 상징
-	printf('\n');
+	printf("\n");
 	for(i = 0; i < matStruct->n; i++){
 		for(j = 0; j < matStruct->m; j++){
 			printf("%d ", matStruct->matData[i][j]);
 		}
-		printf('\n');
+		printf("\n");
 	}
 }
 

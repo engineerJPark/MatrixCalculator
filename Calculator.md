@@ -36,10 +36,14 @@ https://dojang.io/mod/page/view.php?id=337
 https://chanywa.com/343
 
 NULL, \0의 차이
-https://noirstar.tistory.com/16
+https://code4human.tistory.com/116
 
 올린 질문
 https://stackoverflow.com/questions/67724797/cant-find-the-problem-of-stack-smashing-detected-unknown-terminat?noredirect=1#
+
+배운 것
+디버거 꼭 쓰자. 디버거를 얼마나 잘 쓰는지가 프로그램의 완성 시간을 가른다.
+
 
 
 ----
@@ -289,4 +293,86 @@ e4796a40
 1
 
 보면 func()에서는 아예 넘겨받은 t에 대해서 새로운 struct를 생성해주는 것을 알 수 있다.
+*/
+
+----
+
+```
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define TEXT_LENGTH 512
+#define MATMAXNUMBER 10
+#define ERRORTEST printf("no error\n");
+
+typedef struct Matrix{
+	// row and coloum
+	int n;
+	int m;
+	
+	// data of matrix
+	char ** matData;
+	char textMat[TEXT_LENGTH];
+} Matrix;
+
+Matrix *initializeMatrix(Matrix * matStruct){
+	matStruct->matData = malloc(sizeof(char*) * matStruct->n);
+	for(int i = 0; i < matStruct->n; i++){
+		matStruct->matData[i] = calloc(matStruct->m, sizeof(float) * matStruct->m);
+	}
+	
+	matStruct->matData[0][0] = 1;
+	matStruct->textMat[0] = 1;
+	
+	printf("%x\n", &matStruct);
+	printf("%x\n", matStruct);
+	printf("%x\n", &(matStruct->matData));
+	printf("%x\n", matStruct->matData);
+	printf("%x\n", matStruct->matData[0][0]);
+	printf("%x\n", &(matStruct->textMat));
+	printf("%x\n", matStruct->textMat);
+	printf("%x\n", matStruct->textMat[0]);
+	
+	return matStruct;
+}
+
+int main(){
+	Matrix * matStruct;
+	
+	initializeMatrix(matStruct);
+	
+	printf("\n\n", &matStruct);
+	
+	printf("%x\n", &matStruct);
+	printf("%x\n", matStruct);
+	printf("%x\n", &(matStruct->matData));
+	printf("%x\n", matStruct->matData);
+	printf("%x\n", matStruct->matData[0][0]);
+	printf("%x\n", &(matStruct->textMat));
+	printf("%x\n", matStruct->textMat);
+	printf("%x\n", matStruct->textMat[0]);
+	
+	
+	return 0;
+}
+```
+
+/*
+9b8fc98
+9b8fdc0
+9b8fdc8
+80cd3260
+1
+9b8fdd0
+9b8fdd0
+1
+
+9b8fcd0
+9b8fdc0
+9b8fdc8
+80cd3260
+1
+9b8fdd0
+9b8fdd0
+1
 */
